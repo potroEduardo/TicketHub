@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    <%= event.eventName %> - Event Booking System</title>
+  <%- include partials/html-head %>
+</head>
+
+<body class="event-page">
+  <%- include partials/navbar %>
+
+    <!-- Begin page content -->
+    <main class="container">
+      <div class="card-flex mt-3">
+        <header class="title mb-0">
+          <%= event.eventName %>
+        </header>
+				<% if (type === 'staff') { %>
+					<a href="/event/update/id/<%= event.eventId %>" class="btn btn-sm btn-secondary ml-3">Editar</a>
+					<button class="toggle btn btn-sm btn-danger ml-2" data-toggle="modal" data-target="#deleteModal" data-href="/event/delete/id/<%= event.eventId %>">Eliminar</button>
+				<% } %>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteLabel">Confirmacion de eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                ¿Estas seguro que deseas eliminarlo?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger delete">Eliminar</button>
+                <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col">
+          <div class="info">
+            <div class="mb-2">
+              <i class="far fa-calendar-alt">
+                <span class="font-italic">
+                  <%= event.durationString %>
+                </span>
+              </i>
+            </div>
+            <div class="mb-2">
+              <i class="fas fa-map-marker-alt">
+                <span class="font-italic">
+                  <%= event.address%>
+                </span>
+              </i>
+            </div>
+            <div class="mb-2">
+              <i class="fas fa-dollar-sign">
+                <span class="font-italic">
+                  <%= event.price %>
+                </span>
+              </i>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <div class="col-12 col-md-8">
+            <% if (event.endDate > new Date() && booked) { %>
+            <div class="alert alert-info mt-3 mb-3">Ya compraste este evento</div>
+            <% } %>
+
+            <% if (event.endDate < new Date()) { %>
+            <div class="alert alert-warning mt-3 mb-3">Este evento Terminó</div>
+            <% } %>
+              <div class="card mt-3 mb-3">
+                <h5 class="card-header">Descripcion</h5>
+                <div class="card-body">
+                  <div class="card-text">
+                    <%- event.fullDesc %>
+                  </div>
+                </div>
+              </div>
+              <% if (eventFull && !booked && event.endDate > new Date()) { %>
+              <div class="alert alert-danger">Este evento esta agotado de boletos</div>
+              <% } %>
+
+              <% if (event.endDate > new Date() && username != null ) { %>
+              <button id="btn-book" data-price="<%= event.price %>" data-eventid="<%= event.eventId %>" data-status="<%= booked ? 'cancel-book' : 'book-in' %>" class="btn <%= booked ? 'btn-danger' : 'btn-primary' %> mt-0 " <%= eventFull && !booked ? 'disabled' : '' %> >
+              <%= booked ? 'Cancelar' : 'Comprar' %>
+              </button>
+              <% } %>
+            </div>
+
+            <% if (type === 'staff') { %>
+            <div class="col-12 col-md-4">
+              <div class="card mt-3">
+                <h5 class="card-header">Otra información</h5>
+                <div class="card-body">
+                  <strong class="card-text">
+                    Maxima capacidad:
+                  </strong>
+                  <div class="card-text mb-2">
+                    <%= event.capacity %>
+                  </div>
+                  <strong class="card-text">
+                    Numbero de boletos vendidos:
+                  </strong>
+                  <div class="card-text mb-2">
+                    <%= event.currentBookings %>
+                  </div>
+                  <strong class="card-text">
+                    Codigo promocional:
+                  </strong>
+                  <div class="card-text mb-2">
+                    <% if (!event.promoCode) { %>
+                      N/A
+                      <% } else { %>
+                        <%= event.promoCode %>
+                          <% } %>
+                  </div>
+                  <strong class="card-text">
+                    Porcentaje de descuento:
+                  </strong>
+                  <div class="card-text">
+                    <% if (!event.discount) { %>
+                      N/A
+                      <% } else { %>
+                        <%= event.discount %>%
+                          <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+  <div id="event-modal"class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger">Reserva fallida</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Sticky Footer -->
+    <%- include partials/footer %>
+
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <%- include partials/html-scripts %>
+      <script src="/assets/event-page.js"></script>
+      <script src="/assets/delete-event.js"></script>
+</body>
+
+</html>

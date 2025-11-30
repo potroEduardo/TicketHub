@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Crear nuevo evento - Ticket hub</title>
+	<%- include partials/html-head %>
+		<!-- Include pickadate -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/default.css" integrity="sha256-HJnF0By+MMhHfGTHjMMD7LlFL0KAQEMyWB86VbeFn4k="
+		 crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/default.date.css"
+		 integrity="sha256-Ex8MCGbDP5+fEwTgLt8IbGaIDJu2uj88ZDJgZJrxA4Y=" crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/default.time.css"
+		 integrity="sha256-0GwWH1zJVNiu4u+bL27FHEpI0wjV0hZ4nSSRM2HmpK8=" crossorigin="anonymous" />
+		<!-- Quilljs -->
+		<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+
+<body class="create-page">
+
+	<%- include partials/navbar %>
+
+	<!-- Begin page content -->
+	<main class="container">
+		<div class="row big-font">
+			<div class="col-md-10 col-lg-8">
+				<header class="title mt-3 mb-2">Crear nuevo evento</header>
+				<form class="needs-validation ml-1" novalidate autocomplete="off">
+					<div class="form-group mt-2">
+						<label for="event-name">Nombre del evento</label>
+						<input type="text" class="form-control" id="event-name" required>
+						<div class="invalid-feedback">
+							Nombre del evento es obligatorio
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="overview">Descripción</label>
+						<textarea class="form-control" id="overview" rows="3" required></textarea>
+						<div class="invalid-feedback">
+							Descripción del evento es obligatorio.
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="address">Dirección</label>
+						<input type="text" class="form-control" id="address" required>
+						<div class="invalid-feedback">
+							Event Address is required.
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="date">Fecha</label>
+						<input class="form-control" id="date"  required>
+						<div class="invalid-feedback">
+							Fecha del evento es obligatoria
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="start-time">Hora de inicio</label>
+							<input class="form-control" id="start-time" required>
+							<div class="invalid-feedback" id="start-feedback">
+								Hora de inicio es obligatoria
+							</div>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="end-time">Hora de Finalización</label>
+							<input class="form-control" id="end-time" required>
+							<div class="invalid-feedback">
+								Hora de Finalizacion es obligatoria
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="full-desc">Descripcion completa</label>
+						<div id="full-desc"></div>
+						<div class="invalid-feedback" id="quill-feedback">
+							Descripción completa es obligatoria
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col-lg-5">
+							<label for="capacity">Precio</label>
+							<input type="number" class="form-control" id="price" min="0">
+							<div class="invalid-feedback">
+								Digita un precio valido
+							</div>
+							<small class="form-text text-muted">
+								Dejar vacio si es gratis
+							</small>
+						</div>
+						<div class="form-group col-lg-5">
+							<label for="capacity">Capacidad</label>
+							<input type="number" class="form-control" id="capacity" min="1" required>
+							<div class="invalid-feedback">
+								Digita un numero valido
+							</div>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col-lg-5">
+							<label for="promo-code">codigo de promoción</label>
+							<input type="text" class="form-control" id="promo-code" >
+							<small class="form-text text-muted">
+								Opcional.
+							</small>
+							<div class="invalid-feedback">
+								Ingresa un codigo de promocion en caso de requerirlo
+							</div>
+						</div>
+
+						<div class="form-group col-lg-5">
+							<label for="discount">Porcentaje de descuento</label>
+							<input type="number" class="form-control" min="0" max="100" id="discount" >
+							<small class="form-text text-muted">
+								Codigo Promocional
+							</small>
+							<div class="invalid-feedback">
+								Ingresa un codigo valido
+							</div>
+						</div>
+					</div>
+
+					<button class="btn btn-primary mb-5 submit-btn" type="submit">Continuar</button>
+				</form>
+			</div>
+		</div>
+	</main>
+
+	<%- include partials/footer %>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<%- include partials/html-scripts %>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js" integrity="sha256-A1y8n02GW5dvJFkEOX7UCbzJoko8kqgWUquWf9TWFS8="
+		 crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.time.js" integrity="sha256-vFMKre5X5oQN63N+oJU9cJzn22opMuJ+G9FWChlH5n8="
+		 crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js" integrity="sha256-rTh8vmcE+ZrUK3k9M6QCNZIBmAd1vumeuJkagq0EU3g="
+		 crossorigin="anonymous"></script>
+		<!-- Include the Quill library -->
+		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+		<script src="/assets/create-form.js"></script>
+</body>
+
+</html>
